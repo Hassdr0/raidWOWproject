@@ -2,13 +2,12 @@ package dev.hassdro.raidwow.controller;
 
 import dev.hassdro.raidwow.model.players;
 import dev.hassdro.raidwow.service.playersService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,14 +19,20 @@ public class playersController {
 
     @Autowired
     private playersService service;
+    @Autowired
+    private dev.hassdro.raidwow.repository.playersRepository playersRepository;
 
     /*localhost:8080/api/players*/
 
     //POST
     @PostMapping("/add")
-    public ResponseEntity<players> addPlayers(@RequestBody players player){
-        players newPlayer = service.createPlayer(player);
-        return new ResponseEntity<>(newPlayer, HttpStatus.CREATED);
+    public ResponseEntity<?> addPlayers(@RequestBody players player) {
+        try {
+            players newPlayer = service.createPlayer(player);
+            return new ResponseEntity<>(newPlayer, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     //GET ALL
@@ -54,4 +59,19 @@ public class playersController {
         service.deletePlayerById(id);
 
     }
-}
+
+
+    //UPDATE PUT METHOD
+    @PutMapping ("/update/{id}")
+    public ResponseEntity<players> updatePlayer(@PathVariable Long id, @RequestBody players player) {
+        try {
+            players updatedPlayer = service.updatePlayer(id, player);
+            return new ResponseEntity<>(updatedPlayer, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    }
