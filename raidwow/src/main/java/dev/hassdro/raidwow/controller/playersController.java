@@ -55,8 +55,17 @@ public class playersController {
     /* TODO: Usar um option para tratar casos em que o id seja inserido errado*/
 
     @DeleteMapping("delete/{id}")
-    public void deletePlayer(@PathVariable Long id){
-        service.deletePlayerById(id);
+    public ResponseEntity<players> deletePlayer(@PathVariable Long id){
+
+        Optional<players> playerOptional = service.getPlayerById(id);
+
+        if (playerOptional.isPresent()) {
+            players player = playerOptional.get();
+            service.deletePlayerById(id);
+            return ResponseEntity.ok(player);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
 
     }
 
