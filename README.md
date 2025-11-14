@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="raidwow/src/test/java/dev/hassdro/raidwow/Bentodog.jpg" width="210" alt="Bentodog">
+</p>
+
+
 # Sistema de Cadastro de Players para Raids
 
 Este projeto foi desenvolvido para fins comunitarios de uso na comunidade do wow classic br, do jogo World of Warcraft. A ideia inicial é de integrar a API do warcraftlogs e ter um registro de dados dos player brasileiros do servidor Faerlina e afins, e ter uma "comparação" saudável a comunidade.
